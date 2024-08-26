@@ -2,7 +2,9 @@ pipeline{
     
     agent any
     stages{
-        
+          always{
+                cleanWs()
+            }
         stage('Build'){
             agent{
                 docker{
@@ -11,9 +13,7 @@ pipeline{
                     reuseNode true
                 }
             }
-            always{
-                cleanWs()
-            }
+          
             steps{
                 
                 sh'''
