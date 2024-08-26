@@ -30,12 +30,19 @@ pipeline{
                 
             }
         }
+        stage('Test'){
+                sh'''
+                    test  -f  build/index.html
+
+                '''
+            
+        }
         
         
     }
     post{
         success{
-            archiveArtifacts artifacts:'learn-jenkins-app/**'
+            archiveArtifacts artifacts:'/**'
         }
     }
     
