@@ -15,7 +15,7 @@ pipeline{
           
             steps{
                 
-        //cleanWs()
+            cleanWs()
           
                 sh'''
                 pwd
@@ -32,6 +32,11 @@ pipeline{
         }
         
         
+    }
+    post{
+        sucess{
+            archiveArtifacts artifacts:'learn-jenkins-app/**'
+        }
     }
     
   
