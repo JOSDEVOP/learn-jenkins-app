@@ -34,7 +34,7 @@ pipeline{
         
     }
     post{
-        sucess{
+        success{
             archiveArtifacts artifacts:'learn-jenkins-app/**'
         }
     }
