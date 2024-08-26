@@ -2,23 +2,11 @@ pipeline{
     
     agent any
     stages{
-        stage('Build'){
-            steps{
-                sh'''
-                ls -la
-                npm --version
-                node --version
-                npm 
-                
-                '''
-                
-            }
-        }
         
-        stage('With docker'){
+        stage('Build'){
             agent{
                 docker{
-                    image 'node:16-alpine'
+                    image 'node:18-alpine'
                     args '-u root'
                     reuseNode true
                 }
@@ -26,11 +14,10 @@ pipeline{
             steps{
                 sh'''
                 
-                echo "With docker agent"
+                ls -la
                 npm --version
                 node --version
-                apk add --no-cache ansible # Install Ansible in Alpine-based Docker image
-                ansible --version
+                
                 '''
                 
             }
