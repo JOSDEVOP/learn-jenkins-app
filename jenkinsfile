@@ -14,9 +14,9 @@ pipeline{
             }
           
             steps{
-                  always{
+                
                 cleanWs()
-            }
+          
                 sh'''
                 pwd
                 ls -la
