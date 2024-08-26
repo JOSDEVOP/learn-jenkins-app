@@ -2,10 +2,9 @@ pipeline{
     
     agent any
     stages{
-          always{
-                cleanWs()
-            }
+         
         stage('Build'){
+           
             agent{
                 docker{
                     image 'node:18-alpine'
@@ -15,7 +14,9 @@ pipeline{
             }
           
             steps{
-                
+                  always{
+                cleanWs()
+            }
                 sh'''
                 pwd
                 ls -la
