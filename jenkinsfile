@@ -15,7 +15,7 @@ pipeline{
           
             steps{
                 
-            cleanWs()
+            // cleanWs()
           
                 sh'''
                 pwd
@@ -46,6 +46,7 @@ pipeline{
                     npm test
 
                 '''
+                archiveArtifacts artifacts:'test-results/**'
                 }
             
         }
@@ -53,7 +54,13 @@ pipeline{
         
     }
  
-    
+    post{
+success{
+
+    archiveArtifacts artifacts: 'build/**'
+}
+
+    }
   
 }
 
