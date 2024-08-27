@@ -15,14 +15,14 @@ pipeline{
           
             steps{
                 
-            cleanWs()
+            // cleanWs()
           
                 sh'''
                 pwd
                 ls -la
                 npm --version
                 node --version
-                npm install
+                npm ci
                 npm run build
                 ls -la
                 
@@ -35,7 +35,7 @@ pipeline{
                 docker{
                     image 'node:18-alpine'
                     reuseNode true
-                
+            
                 } 
                 
 
@@ -47,6 +47,28 @@ pipeline{
 
                 '''
                 archiveArtifacts artifacts:'test-results/**'
+                }
+            
+        }
+        stage('E2E'){
+            agent{
+                docker{
+                    image 'mcr.microsoft.com/playwright:v1.46.1-jammy'
+                    reuseNode true
+                    // args' -u root'
+            
+                } 
+                
+
+            }
+                steps{
+                      sh'''
+                      npm install   serve
+                      node_modules/serve -s build
+                      npx playwright test
+
+                '''
+      
                 }
             
         }
