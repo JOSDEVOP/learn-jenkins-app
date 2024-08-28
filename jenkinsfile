@@ -97,14 +97,13 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
+                    args '-u root'
                    
                 }
             }
             steps {
                 sh '''
-                 rm -f  /var/lib/jenkins/workspace/Jibril Salim Osman
-                    
-                    npm cache clean --force
+           
 
                     ls -la
                     node --version
