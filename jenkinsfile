@@ -1,89 +1,156 @@
-pipeline{
+// pipeline{
     
-    agent any
-    stages{
+//     agent any
+//     stages{
          
-        stage('Build'){
+//         stage('Build'){
            
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    // args '-u root'
-                    reuseNode true
-                }
-            }
+//             agent{
+//                 docker{
+//                     image 'node:18-alpine'
+//                     // args '-u root'
+//                     reuseNode true
+//                 }
+//             }
           
-            steps{
+//             steps{
                 
-            //   cleanWs()
+//             //   cleanWs()
           
-                sh'''
-                pwd
-                ls -la
-                npm --version
-                node --version
-                npm ci
-                npm run build
-                ls -la
+//                 sh'''
+//                 pwd
+//                 ls -la
+//                 npm --version
+//                 node --version
+//                 npm ci
+//                 npm run build
+//                 ls -la
                 
-                '''
+//                 '''
                 
-            }
-        }
-        stage('Test'){
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
+//             }
+//         }
+//         stage('Test'){
+//             agent{
+//                 docker{
+//                     image 'node:18-alpine'
+//                     reuseNode true
             
-                } 
+//                 } 
                 
 
-            }
-                steps{
-                      sh'''
-                    test  -f  build/index.html
-                    npm test
+//             }
+//                 steps{
+//                       sh'''
+//                     test  -f  build/index.html
+//                     npm test
 
-                '''
-                archiveArtifacts artifacts:'test-results/**'
-                }
+//                 '''
+//                 archiveArtifacts artifacts:'test-results/**'
+//                 }
             
-        }
-        stage('E2E'){
-            agent{
-                docker{
-                    image 'mcr.microsoft.com/playwright:v1.46.1-jammy'
-                    reuseNode true
-                    // args' -u root'
+//         }
+//         stage('E2E'){
+//             agent{
+//                 docker{
+//                     image 'mcr.microsoft.com/playwright:v1.46.1-jammy'
+//                     reuseNode true
+//                     // args' -u root'
             
-                } 
+//                 } 
                 
 
-            }
-                steps{
-                      sh'''
-                      npm install   serve
-                      node_modules/.bin/serve -s build
-                      npx playwright test
+//             }
+//                 steps{
+//                       sh'''
+//                       npm install   serve
+//                       node_modules/.bin/serve -s build
+//                       npx playwright test
 
-                '''
+//                 '''
       
-                }
+//                 }
             
-        }
+//         }
         
         
-    }
+//     }
  
-    post{
-success{
+//     post{
+// success{
 
-    archiveArtifacts artifacts: 'build/**'
-}
+//     archiveArtifacts artifacts: 'build/**'
+// }
 
-    }
+//     }
   
-}
+// }
 
+pipeline {
+    agent any
+
+    stages {
+  
+
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
+            }
+        }
+   
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+
+            steps {
+                sh '''
+                    #test -f build/index.html
+                    npm test
+                '''
+            }
+        }
+
+        stage('E2E') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+
+            steps {
+                sh '''
+                    npm install serve
+                    node_modules/.bin/serve -s build &
+                    sleep 10
+                    npx playwright test
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            junit 'jest-results/junit.xml'
+        }
+    }
+}
 
