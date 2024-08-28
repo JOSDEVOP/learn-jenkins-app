@@ -97,6 +97,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
+                     args '-u 105:108 -v /var/lib/jenkins/workspace:/workspace'
                 }
             }
             steps {
