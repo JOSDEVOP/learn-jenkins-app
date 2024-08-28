@@ -97,11 +97,12 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
-                     args '-u 105:108 -v /var/lib/jenkins/workspace:/workspace'
+                   
                 }
             }
             steps {
                 sh '''
+                 rm -f  /var/lib/jenkins/workspace/Jibril Salim Osman
                       mkdir -p ~/.npm
                      chown -R $(id -u):$(id -g) ~/.npm
                     npm cache clean --force
