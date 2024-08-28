@@ -101,6 +101,8 @@ pipeline {
             }
             steps {
                 sh '''
+                      mkdir -p ~/.npm
+                     chown -R $(id -u):$(id -g) ~/.npm
                     npm cache clean --force
 
                     ls -la
