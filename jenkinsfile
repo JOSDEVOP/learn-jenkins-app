@@ -103,8 +103,7 @@ pipeline {
             steps {
                 sh '''
                  rm -f  /var/lib/jenkins/workspace/Jibril Salim Osman
-                      mkdir -p ~/.npm
-                     chown -R $(id -u):$(id -g) ~/.npm
+                    
                     npm cache clean --force
 
                     ls -la
