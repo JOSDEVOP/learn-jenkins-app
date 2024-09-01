@@ -20,7 +20,7 @@ pipeline{
          //   npm ci --unsafe-perm
                 sh'''
           
-                chown -R  105 : 108~/.npm   
+                chown -R  105 : 108 ~/.npm   
 
                 pwd
                 ls -la
