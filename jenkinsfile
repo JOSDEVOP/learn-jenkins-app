@@ -18,8 +18,8 @@ pipeline{
     //    cleanWs()
           
                 sh'''
-             chown -R $(id -u):$(id -g) ~/.npm
-            npm ci
+            //  chown -R $(id -u):$(id -g) ~/.npm
+                npm ci
 
                 pwd
                 ls -la
