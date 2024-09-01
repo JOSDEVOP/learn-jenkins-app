@@ -20,7 +20,7 @@ pipeline{
          //   npm ci --unsafe-perm
                 sh'''
           
-         chown -R 105:108  ~/.npm   
+        
 
                 pwd
                 ls -la
@@ -69,7 +69,7 @@ pipeline{
             }
                 steps{
                       sh''' 
-                      chown -R 105:108
+                 
                       npm install   serve
                       node_modules/.bin/serve -s build
                       npx playwright test
