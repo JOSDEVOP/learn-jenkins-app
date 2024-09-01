@@ -19,7 +19,7 @@ pipeline{
         //  chown -R $(id -u):$(id -g) ~/.npm   
          //   npm ci --unsafe-perm
                 sh'''
-           
+          chown -R 105:108 ~/.npm
                 npm ci
 
                 pwd
