@@ -6,13 +6,14 @@ pipeline {
                 docker {
                     image 'node:20-alpine'
                     reuseNode true
+                    arg' -u node'
                 }
             }
             steps {
                 cleanWs()
                 sh '''
-                chown -R $(id -u):$(id -g) .
-                chmod -R 755 .
+                #chown -R $(id -u):$(id -g) .
+                #chmod -R 755 .
 
                 pwd
                 ls -la
