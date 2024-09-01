@@ -18,7 +18,9 @@ pipeline{
     //    cleanWs()
           
                 sh'''
-               sudo chown -R 105:108  /.npm
+            sudo chown -R $(id -u):$(id -g) ~/.npm
+            npm ci
+
                 pwd
                 ls -la
                 npm --version
