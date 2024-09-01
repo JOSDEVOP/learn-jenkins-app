@@ -1,94 +1,63 @@
-pipeline{
-    
+pipeline {
     agent any
-    stages{
-         
-        stage('Build'){
-           
-            agent{
-                docker{
+    stages {
+        stage('Build') {
+            agent {
+                docker {
                     image 'node:20-alpine'
-                    // args '-u root'
                     reuseNode true
                 }
             }
-          
-            steps{
-                
-    //    cleanWs()
-     
-         //   npm ci --unsafe-perm
-                
-                 sh '''
-                # Adjust file permissions to allow the Docker user to modify the workspace files
+            steps {
+                sh '''
                 chown -R $(id -u):$(id -g) .
                 chmod -R 755 .
-                
+
                 pwd
                 ls -la
                 npm --version
                 node --version
-                npm ci
+                npm ci --unsafe-perm
                 npm run build
                 
                 ls -la
                 '''
-                
             }
         }
-        stage('Test'){
-            agent{
-                docker{
+        stage('Test') {
+            agent {
+                docker {
                     image 'node:20-alpine'
                     reuseNode true
-            
-                } 
-                
-
-            }
-                steps{
-                      sh'''
-                    test  -f  build/index.html
-                    npm test
-
-                '''
-                archiveArtifacts artifacts:'test-results/**'
                 }
-            
+            }
+            steps {
+                sh '''
+                test -f build/index.html
+                npm test
+                '''
+                archiveArtifacts artifacts: 'test-results/**'
+            }
         }
-        stage('E2E'){
-            agent{
-                docker{
+        stage('E2E') {
+            agent {
+                docker {
                     image 'mcr.microsoft.com/playwright:v1.46.1-jammy'
                     reuseNode true
-                    // args' -u root'
-            
-                } 
-                
-
-            }
-                steps{
-                      sh''' 
-                 
-                      npm install   serve
-                      node_modules/.bin/serve -s build
-                      npx playwright test
-
-                '''
-      
                 }
-            
+            }
+            steps {
+                sh '''
+                npm install serve
+                node_modules/.bin/serve -s build
+                npx playwright test
+                '''
+            }
         }
-        
-        
     }
- 
-    post{
-success{
-
-    archiveArtifacts artifacts: 'build/**'
-}
-
+    post {
+        success {
+            archiveArtifacts artifacts: 'build/**'
+        }
     }
-  
 }
