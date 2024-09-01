@@ -7,8 +7,8 @@ pipeline{
            
             agent{
                 docker{
-                    image 'node:18-alpine'
-                    args '-u root'
+                    image 'node:20-alpine'
+                    // args '-u root'
                     reuseNode true
                 }
             }
@@ -20,7 +20,7 @@ pipeline{
          //   npm ci --unsafe-perm
                 sh'''
           
-               npm ci --unsafe-perm
+                npm ci
 
                 pwd
                 ls -la
@@ -38,7 +38,7 @@ pipeline{
         stage('Test'){
             agent{
                 docker{
-                    image 'node:18-alpine'
+                    image 'node:20-alpine'
                     reuseNode true
             
                 } 
@@ -60,7 +60,7 @@ pipeline{
                 docker{
                     image 'mcr.microsoft.com/playwright:v1.46.1-jammy'
                     reuseNode true
-                    args' -u root'
+                    // args' -u root'
             
                 } 
                 
@@ -68,8 +68,8 @@ pipeline{
             }
                 steps{
                       sh'''
-                      npm install   -g serve
-                      serve -s build
+                      npm install   serve
+                      node_modules/.bin/serve -s build
                       npx playwright test
 
                 '''
