@@ -8,7 +8,7 @@ pipeline{
             agent{
                 docker{
                     image 'node:18-alpine'
-                    args '-u root'
+                    args '-u 0'
                     reuseNode true
                 }
             }
@@ -19,7 +19,7 @@ pipeline{
         //  chown -R $(id -u):$(id -g) ~/.npm   
          //   npm ci --unsafe-perm
                 sh'''
-          chown -R 105:108  root/.npm
+          chown -R 105:108  /.npm
                 npm ci
 
                 pwd
