@@ -1,6 +1,12 @@
 pipeline {
     agent any
     stages {
+        stage('Clean Workspace') {
+    steps {
+        deleteDir()
+    }
+}
+
         stage('Build') {
             agent {
                 docker {
@@ -19,7 +25,8 @@ pipeline {
                 ls -la
                 npm --version
                 node --version
-                npm ci --unsafe-perm
+                npm ci --verbose --unsafe-perm
+
                 npm run build
                 
                 ls -la
