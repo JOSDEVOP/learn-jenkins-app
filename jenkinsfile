@@ -6,7 +6,7 @@ pipeline {
         //         deleteDir()
         //     }
         // }
-}
+//}
 
         stage('Build') {
             agent {
